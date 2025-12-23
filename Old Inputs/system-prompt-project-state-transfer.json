@@ -1,0 +1,197 @@
+{
+  "project_name": "System Prompt Revisions",
+  "source_project": "Screenshot MCP",
+  "transfer_date": "2025-12-20T15:45:00Z",
+  "purpose": "Comprehensive system prompt improvements based on lessons learned from Screenshot MCP project",
+  "primary_document": "system-prompt-additions-needed.md",
+  "context": {
+    "user_name": "Lucky",
+    "user_role": "Product manager with extensive technical expertise",
+    "operating_environment": {
+      "os": "Windows 11",
+      "monitors": "2x 4K portrait + 1x 5K landscape",
+      "python_version": "3.13",
+      "powershell_version": "7.x",
+      "active_ides": ["Claude Desktop", "Cursor"]
+    },
+    "active_mcps": {
+      "claude_desktop": [
+        "Windows-MCP (11 tools, requires PS7 patch)",
+        "Apify MCP",
+        "web_search (built-in)",
+        "Google Drive",
+        "PubMed"
+      ],
+      "cursor": [
+        "Windows-MCP (11 tools, requires PS7 patch)",
+        "Supermemory (4 tools)",
+        "Brave Search"
+      ]
+    },
+    "critical_files": {
+      "claude_desktop_config": "%APPDATA%\\Claude\\claude_desktop_config.json",
+      "cursor_mcp_config": "C:\\Users\\Work\\.cursor\\mcp.json",
+      "screenshots_dir": "C:\\Users\\Work\\Documents\\Claude\\Screenshots",
+      "python_path": "C:\\Users\\Work\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "windows_mcp_ps7_patch": "C:\\Users\\Work\\Documents\\Claude\\windows-mcp-ps7-patch.md"
+    }
+  },
+  "task_summary": "Review system-prompt-additions-needed.md and create comprehensive system prompt revisions addressing all 16 identified issues",
+  "issues_to_address": [
+    {
+      "id": 1,
+      "title": "Aggressiveness controls",
+      "priority": "critical",
+      "summary": "Ask permission before workarounds, flags that bypass safety checks, process kills"
+    },
+    {
+      "id": 2,
+      "title": "MCP documentation format",
+      "priority": "high",
+      "summary": "Standardized documentation sections for each MCP in system prompt"
+    },
+    {
+      "id": 3,
+      "title": "Process termination guardrails",
+      "priority": "critical",
+      "summary": "Never kill user-critical processes (IDEs, browsers) without explicit permission"
+    },
+    {
+      "id": 4,
+      "title": "File edit verification",
+      "priority": "high",
+      "summary": "Always read back files after modifications to verify changes worked"
+    },
+    {
+      "id": 5,
+      "title": "Package quality filters",
+      "priority": "medium",
+      "summary": "Don't present abandonware (<5 stars, >3 months stale, no maintainer response)"
+    },
+    {
+      "id": 6,
+      "title": "Cursor UI warnings",
+      "priority": "medium",
+      "summary": "Warn that Cursor's MCP UI rewrites mcp.json and drops unrecognized entries"
+    },
+    {
+      "id": 7,
+      "title": "Path resolution debugging",
+      "priority": "medium",
+      "summary": "Check actual PATH for specific process, don't assume user terminal PATH applies"
+    },
+    {
+      "id": 8,
+      "title": "Dependency assessment",
+      "priority": "high",
+      "summary": "Check for deprecated/abandoned dependencies, memory leak warnings, security issues"
+    },
+    {
+      "id": 9,
+      "title": "Unicode awareness",
+      "priority": "medium",
+      "summary": "Anticipate Windows cp1252 vs UTF-8 encoding issues, especially for Python packages"
+    },
+    {
+      "id": 10,
+      "title": "Native module warnings",
+      "priority": "high",
+      "summary": "Treat node-gyp dependencies as red flags on Windows (Python version conflicts, build requirements)"
+    },
+    {
+      "id": 11,
+      "title": "API verification requirements",
+      "priority": "high",
+      "summary": "Cite official documentation for technical claims, verify against Microsoft/vendor docs"
+    },
+    {
+      "id": 12,
+      "title": "Build vs buy framework",
+      "priority": "medium",
+      "summary": "Support custom build decision when ecosystem is broken/immature"
+    },
+    {
+      "id": 13,
+      "title": "Multiple solution proposals",
+      "priority": "high",
+      "summary": "Present 2-3 alternatives with tradeoffs rather than trying multiple workarounds"
+    },
+    {
+      "id": 14,
+      "title": "Header comment format by file type",
+      "priority": "medium",
+      "summary": "Explicit examples for each comment syntax (HTML comments in .md, // in JSON, # in bash, etc.)"
+    },
+    {
+      "id": 15,
+      "title": "Runaway execution prevention",
+      "priority": "critical",
+      "summary": "Stop and ask before approach changes, no hacks without permission, RCA before pivoting"
+    },
+    {
+      "id": 16,
+      "title": "File format preferences",
+      "priority": "low",
+      "summary": "Use .rst for user docs, .md for ecosystem docs (GitHub, MCP projects)"
+    }
+  ],
+  "key_principles": {
+    "permission_philosophy": "Start conservative (ask for everything), loosen based on feedback. User prefers too tight over too autonomous.",
+    "hack_policy": "Fix root causes, never hack around problems. No hardcoded paths, no workarounds that updates will wipe out. Hacks only with explicit permission in super-rare cases.",
+    "approach_changes": "User agrees to approach A. If A fails, STOP, perform RCA, propose approach B, ASK permission. Never pivot without approval.",
+    "verification_culture": "Never trust tool success messages. Always verify file edits by reading back. Check actual results, not expected results.",
+    "quality_standards": "10+ GitHub stars OR active commits in last 30 days. Don't present abandonware. Flag deprecated dependencies and security issues.",
+    "documentation_style": "Precise, factual, opinions clearly marked. Max 250 words initial response unless multi-step technical. Ask if should continue."
+  },
+  "problematic_existing_prompts": [
+    {
+      "prompt": "Asking Permission Unnecessarily: BAD: 'Would you like me to implement X?' GOOD: 'I'll implement X.'",
+      "problem": "Encourages autonomous execution without confirmation when approach changes",
+      "replacement_needed": "Ask permission before implementing any new approach, especially after failures"
+    },
+    {
+      "prompt": "When You Need Info: 'Need: [specific item]. Proceeding with assumption [Y] if not provided.'",
+      "problem": "Forces user to watch like a hawk and manually stop execution",
+      "replacement_needed": "State issue, propose options with tradeoffs, ask for yes/no approval"
+    }
+  ],
+  "examples_of_hacks_requiring_permission": [
+    "npm install --ignore-scripts (bypasses native module builds)",
+    "npm install --force or --legacy-peer-deps (bypasses dependency conflicts)",
+    "Editing third-party source code (like Windows-MCP PS7 patch)",
+    "Hardcoding file paths",
+    "Environment variable workarounds instead of config fixes",
+    "Temporary solutions that updates will wipe out",
+    "Any workaround that doesn't address root cause"
+  ],
+  "windows_specific_context": {
+    "powershell_issue": "Windows-MCP hardcodes 'powershell' (PS 5.1) instead of 'pwsh' (PS 7). Requires manual patch after every update.",
+    "unicode_issue": "Windows console defaults to cp1252, not UTF-8. Python packages with emoji crash unless PYTHONIOENCODING=utf-8 is set.",
+    "python_conflict": "Windows-MCP requires Python >=3.13, node-gyp requires Python <=3.12. Cannot satisfy both without separate environments.",
+    "path_resolution": "App execution aliases (WindowsApps) don't work in spawned PowerShell processes. Requires direct system PATH."
+  },
+  "screenshot_mcp_context": {
+    "status": "Building custom win-display-capture-mcp",
+    "reason": "All existing screenshot MCPs failed (Unicode bugs, native module issues, abandonware, wrong APIs)",
+    "requirements": "DXGI Desktop Duplication API (not Windows.Graphics.Capture), Rust, single .exe, HTTP MCP server",
+    "codex_prompt": "win-display-capture-mcp-codex-prompt.md",
+    "motivations_doc": "screenshot-mcp-project-motivations.md"
+  },
+  "next_steps": [
+    "Review system-prompt-additions-needed.md (contains 16 detailed issues)",
+    "Draft system prompt language for each issue",
+    "Organize into logical sections (safety, verification, quality assessment, file formats, etc.)",
+    "Test language clarity and completeness",
+    "Consider integration points with existing system prompt",
+    "Flag any conflicts with current Anthropic system prompt",
+    "Prepare for iterative refinement with Lucky"
+  ],
+  "important_notes": {
+    "user_preferences_location": "userPreferences tag in system prompt (already contains some guidance)",
+    "existing_memory": "userMemories contains product management background, technical environment, and key learnings",
+    "communication_style": "Lucky prefers precision, welcomes opinions (clearly marked), asks up to 5 clarifying questions, values systematic approaches",
+    "word_count_preference": "Initial answers under 250 words with word count on last line, ask if should continue",
+    "root_user_note": "Lucky predates sudo - omit sudo from root commands, will already be root"
+  },
+  "transfer_complete": true
+}
