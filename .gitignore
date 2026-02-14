@@ -1,0 +1,15 @@
+# Default deny: ignore everything
+*
+
+# Allow this .gitignore so rules persist
+!.gitignore
+
+# Allow root README
+!README.md
+
+# Allow the entire System Prompt v2 directory and its contents
+!System Prompt v2/
+!System Prompt v2/**
+
+# Allow the lucky-admin-mode.yaml file (wherever it lives)
+!*lucky-admin-mode.yaml
